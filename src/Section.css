@@ -1,0 +1,27 @@
+@keyframes section-header-animation {
+    0% {   text-shadow: none; }
+    50% {  text-shadow: 0 0 1em #FED; }
+    100% { text-shadow: none; }
+}
+.section-header-content {
+    font-size: 1.25em;
+    cursor: pointer;
+}
+.section-header-content:hover {
+    animation: section-header-animation 400ms;
+}
+.section-header-content.top-level:hover {
+    animation: none;
+    cursor: default;
+}
+
+.section-content.hidden {
+    max-height: 0;
+    height: 0;
+    transition: all 500ms ease;
+}
+.section-content.visible {
+    max-height: 100em;
+    height: auto;
+    transition: all 500ms ease;
+}

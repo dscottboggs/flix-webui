@@ -1,0 +1,36 @@
+.video-box {
+    display: inline-block;
+    position: relative;
+    width: 14em;
+    height: 22em;
+    overflow: hidden;
+}
+.video-box-title {
+    display: table;
+    height: 100%;
+    width: 84%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    padding-left: 8%;
+    padding-right: 8%;
+}
+.video-box-centering-wrapper-outer {
+    display: table-cell;
+    vertical-align: middle;
+}
+.video-box-centering-wrapper-inner {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0;
+}
+.thumbnail-dimmed {
+    opacity: .4;
+    transition: opacity 0.3s;
+}
+.thumbnail-not-dimmed {
+    opacity: 1;
+    transition: opacity 0.3s;
+}

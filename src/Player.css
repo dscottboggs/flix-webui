@@ -1,0 +1,56 @@
+.videojs-player-parent {
+    text-align: left;
+}
+
+.video-wrapper {
+    position: absolute;
+    top: auto;
+    left: 0;
+    bottom: 100%;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+.video-wrapper-ready {
+    z-index: 5;
+    opacity: 1;
+    transition: opacity .3s;
+}
+.video-wrapper-not-ready {
+    z-index: -5;
+    opacity: 0;
+}
+
+.videojs-player-parent-loading {
+    position: absolute;
+    background-color: #22252E;
+    top: auto;
+    left: 0;
+    bottom: 100%;
+    width: 100%;
+    height: auto;
+    z-index: 10;
+    opacity: 1;
+    text-align: center;
+}
+.videojs-player-parent-loaded {
+    position: absolute;
+    top: auto;
+    left: 0;
+    width: 100%;
+    z-index: -10;
+    opacity: 0;
+    transition: opacity .3;
+    height: auto;
+    text-align: center;
+    padding-bottom: 56.25%; /* correct aspect ratio */
+}
+
+.video-js {     /* The actual player itself */
+    left: auto;
+    right: auto;
+    height: auto;
+    width: 100%;
+    padding-bottom: 56.25%;
+}

@@ -1,0 +1,16 @@
+#Footer-parent {
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    cursor: pointer;
+}
+.Footer-link {
+    cursor: pointer;
+    color: #666;
+    display: inline-block;
+    margin-left: 1.5em;
+    margin-right: 1.5em;
+    font-size: 0.85em;
+}

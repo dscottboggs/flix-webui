@@ -1,0 +1,15 @@
+div.centered-div.parent {
+    display: table;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+div.centered-div.middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+div.centered-div.content {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

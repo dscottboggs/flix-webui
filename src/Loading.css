@@ -1,0 +1,25 @@
+.loading-screen.parent{
+    z-index: -1;
+}
+
+.loading-screen.content {
+    width: 10%;
+}
+
+.loading-logo {
+    animation: App-logo-spin-Z infinite 10s linear;
+}
+
+
+@keyframes App-logo-spin-Y {
+  from {  }
+  to { transform: rotateY(360deg); }
+}
+@keyframes App-logo-spin-X {
+  from { transform: rotateX(0deg); }
+  to { transform: rotateX(360deg); }
+}
+@keyframes App-logo-spin-Z {
+  from { transform: rotateZ(0deg); }
+  to { transform: rotateZ(360deg); }
+}

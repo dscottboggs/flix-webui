@@ -1,0 +1,59 @@
+@keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+html {
+    background-color: #22252E;
+    color: #FED;
+    font-family: Verdana,sans-serif;
+}
+
+header {
+    height: 4%;
+    padding: 1%;
+    text-align: left;
+    margin-left: 60%;
+    font-size: 3em;
+}
+body {
+    animation-duration: 0.3s;
+    animation-name: fade-in;
+}
+div.input.row {
+    display: grid;
+    font-size: 2em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    width: 15em;
+}
+label.login-form {
+    grid-column: 1 / 2;
+}
+input {
+    border-radius: 2em;
+    padding-left: 1em;
+    padding-right: 1em;
+    margin-left: 2em;
+    border: 1px solid #FED;
+    background: #FED;
+}
+input.login-form {
+    grid-column: 2 /2;
+    text-align: right;
+    font-size: 0.75em;
+}
+div.input.button-div {
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+}
+input#submit-button {
+    width: 10em;
+    font-size: 1.5em;
+}
+#button-submit {
+    margin: 0.5em inherit 0.5em inherit;
+}
