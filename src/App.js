@@ -28,14 +28,11 @@ export default class App extends Component {
     };
   }
   componentDidMount() {
-    Dump.request().then(
-      roots => this.setState({rootDirectories: roots}, () => removeSpinner())
-    ).catch(
-      err => {
-        Flash.ERROR(
-              `error gettting roots, ${err};`);
-      }
-    );
+    Dump.request()
+      .then(roots => this.setState(
+        {rootDirectories: roots},
+        () => removeSpinner()))
+      .catch(err => Flash.ERROR(`error gettting roots, ${err};`));
   }
   async VideoWasSelected(identifier) {
     try {
@@ -43,23 +40,22 @@ export default class App extends Component {
         {playing: await this.state.rootDirectories.find(identifier) }
       );
     } catch (err) {
-      if( IDNotFoundError.isPrototypeOf(err) ) {
-        this.setState({playing: null});
-        Flash.ERROR(
-          `Invalid ID ${JSON.stringify(identifier)} was clicked, with error: ${err}`
-        );
-      }else {
-        throw err;
-      }
+      if( !IDNotFoundError.isPrototypeOf(err) ) throw err;
+      this.setState({playing: null});
+      Flash.ERROR(
+        `Invalid ID ${JSON.stringify(identifier)} was clicked, with error: ${err}`
+      );
     }
     this.state.rootDirectories.refresh();
   }
   sectionProps(root, index) {
-    Flash.DEBUG(
-      `returning props for root (keys: ${Object.keys(root)}; values `,
-      `${Object.values(root)}) at index ${index}. root has children ${root.Children}`);
+    // Flash.DEBUG(
+    //   `returning props for root (keys: ${Object.keys(root)}; values `,
+    //   `${Object.values(root)}) at index ${index}. root has children ${root.Children}`);
+    // The root directories are shown as a list (as there can be more than one
+    // "root"), so they're indexed numerically
     if( isNaN(index) ) {
-      Flash.ERROR( `Got root ${root} with non-numeric index ${index}`)
+      Flash.ERROR( `Got root ${root} with non-numeric index ${index}`);
       return null;
     }
     return {
@@ -67,17 +63,11 @@ export default class App extends Component {
       InitiallyExpanded: true,
       ItemClicked: this.VideoWasSelected,
       Thumbnail: root.thumbnail,
-      ThumbnailLoaded: this.thumbnailLoaded,
       Title: root.Title,
       key: `rootdir ${index}`
     };
   }
   backButtonClicked() { this.setState({playing: null}); }
-  thumbnailLoaded(id) {
-    Flash.DEBUG(
-      `Image for ${this.state.rootDirectories[id]}} loaded...`
-    );
-  }
   get playerOptions() {
     return {
       BackButtonClicked: this.backButtonClicked,
@@ -91,7 +81,7 @@ export default class App extends Component {
   }
   get MainBody() {
     if( this.state.rootDirectories === null ) return null;
-    if( this.state.playing ) return <Player { ...this.playerOptions } />
+    if( this.state.playing ) return <Player { ...this.playerOptions } />;
     return this.state.rootDirectories.map(
       (root, i) => {
         if(root.Children) return <Section {...this.sectionProps(root, i)} />;

@@ -215,6 +215,5 @@ Section.propTypes = {
   Content: PropTypes.object.isRequired,
   ItemClicked: PropTypes.func.isRequired,
   InitiallyExpanded: PropTypes.bool.isRequired,
-  ThumbnailLoaded: PropTypes.func.isRequired,
   Thumbnail: PropTypes.string.isRequired
 };
