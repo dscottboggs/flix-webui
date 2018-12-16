@@ -185,8 +185,8 @@ export default class Section extends ComponentWithThumbnail {
   sort(children) {
     return new Promise((resolve, reject) => {
       new Sortable(children).sortWith(this.sortFunction)
-                            .then( sorted => resolve(sorted))
-                            .catch( err => reject(err) );
+                            .then(resolve)
+                            .catch(reject);
     });
   }
   async make(children) {
