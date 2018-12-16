@@ -74,8 +74,7 @@ export default class App extends Component {
       autoplay: true,
       controls: true,
       sources: [{
-        src: `/vid?id=${this.state.playing.ID}`,
-        type: 'video/mp4'
+        src: `/vid?id=${this.state.playing.ID}`
       }]
     };
   }
@@ -93,7 +92,7 @@ export default class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header Visible={this.state.playing === null}/>
+        <Header Visible={!this.state.playing}/>
         <div className="App-root">
           {this.MainBody}
         </div>

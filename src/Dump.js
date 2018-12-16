@@ -77,10 +77,10 @@ Dump.parse = (rawdump) => {
 
 Dump.request = (noparse) => {
   return new Promise(function(resolve, reject) {
-    fetch(process.env.PUBLIC_URL + '/dmp').
-      then(response => response.ok? response.text() :reject("bad response from server")).
-      then(text => resolve(noparse? text :this.parse(text))).
-      catch(e => reject(e));
+    fetch(process.env.PUBLIC_URL + '/dmp')
+      .then(response => response.ok? response.text() :reject("bad response from server"))
+      .then(text => resolve(noparse? text :Dump.parse(text)))
+      .catch(reject);
   });
 };
 
