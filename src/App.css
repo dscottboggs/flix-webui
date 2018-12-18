@@ -1,15 +1,22 @@
 .App {
   text-align: center;
+  height: 100%;
+  margin: 0;
+}
+.not-footer {
+  min-height: 100%;
+}
+.not-footer-content {
+  padding-bottom: 3em;
 }
 html {
   background-color: #22252E;
   color: #FED;
   font-family: Verdana,sans-serif;
+  min-height: 100%;
 }
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+body {
+  height: 100%;
 }
 
 .App-header {
@@ -21,9 +28,4 @@ html {
 
 .App-title {
   font-size: 1.5em;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }

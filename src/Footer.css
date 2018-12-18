@@ -2,8 +2,8 @@
     bottom: 0;
     width: 100%;
     text-align: center;
-    margin-top: 1.5em;
-    margin-bottom: 1.5em;
+    height: 3em;
+    margin-top: -3em;
     cursor: pointer;
 }
 .Footer-link {

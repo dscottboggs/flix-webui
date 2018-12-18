@@ -250,3 +250,16 @@ export class Sortable extends Sensible {
 Sortable.noSwap = -1;
 Sortable.swap = 1;
 Sortable.defaultSortFunction = null;
+
+
+// remove the loading spinner
+// please note that this is not a part of the app because it needs to be present
+// before the app loads so that it can be displayed while the app is downloading.
+export async function removeSpinner() {
+  const spinner = document.getElementById('loading-screen-parent');
+  if (!spinner) return; // null guard
+  const parentNode = spinner.parentNode;
+  if (!(parentNode && parentNode.removeChild)) return; // null guard
+  spinner.parentNode.removeChild(spinner);
+  return {spinner: spinner, parent: parentNode};
+}

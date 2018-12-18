@@ -5,34 +5,30 @@
 
 import React, { Component } from 'react';
 import './App.css';
-import Section from './Section';
 import Header from './Header';
 import Player from './Player';
 import Footer from './Footer';
-import Dump from './Dump';
+import MenuWrapper from './MenuWrapper';
+import LoginScreen from './Login';
 import { IDNotFoundError } from './FileMetadata';
-import { Flash } from './misc';
+import { Flash, removeSpinner } from './misc';
 
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.VideoWasSelected  = this.VideoWasSelected.bind(this);
-    this.sectionProps      = this.sectionProps.bind(this);
     this.backButtonClicked = this.backButtonClicked.bind(this);
+    this.authorizationReceived = this.authorizationReceived.bind(this);
     this.state = {
       auth: null,
-      columns: null,
-      playing: null,
-      rootDirectories: null
+      playing: null
     };
   }
-  componentDidMount() {
-    Dump.request()
-      .then(roots => this.setState(
-        {rootDirectories: roots},
-        () => removeSpinner()))
-      .catch(err => Flash.ERROR(`error gettting roots, ${err};`));
+  authorizationReceived(json){
+    Flash.DEBUG(`received auth token ${JSON.stringify(json)}`);
+    this.loadingScreen.parent.addChild(this.loadingScreen.spinner);
+    this.setState({auth: json.token});
   }
   async VideoWasSelected(identifier) {
     try {
@@ -46,26 +42,6 @@ export default class App extends Component {
         `Invalid ID ${JSON.stringify(identifier)} was clicked, with error: ${err}`
       );
     }
-    this.state.rootDirectories.refresh();
-  }
-  sectionProps(root, index) {
-    // Flash.DEBUG(
-    //   `returning props for root (keys: ${Object.keys(root)}; values `,
-    //   `${Object.values(root)}) at index ${index}. root has children ${root.Children}`);
-    // The root directories are shown as a list (as there can be more than one
-    // "root"), so they're indexed numerically
-    if( isNaN(index) ) {
-      Flash.ERROR( `Got root ${root} with non-numeric index ${index}`);
-      return null;
-    }
-    return {
-      Content: root,
-      InitiallyExpanded: true,
-      ItemClicked: this.VideoWasSelected,
-      Thumbnail: root.thumbnail,
-      Title: root.Title,
-      key: `rootdir ${index}`
-    };
   }
   backButtonClicked() { this.setState({playing: null}); }
   get playerOptions() {
@@ -79,31 +55,27 @@ export default class App extends Component {
     };
   }
   get MainBody() {
+    if (!this.state.auth) {
+      this.loadingScreen = removeSpinner();
+      return <LoginScreen Callback={this.authorizationReceived}/>;
+    }
     if( this.state.rootDirectories === null ) return null;
     if( this.state.playing ) return <Player { ...this.playerOptions } />;
-    return this.state.rootDirectories.map(
-      (root, i) => {
-        if(root.Children) return <Section {...this.sectionProps(root, i)} />;
-        // type check ^^
-        return null;
-      }
-    ).values;
+    return <MenuWrapper OnSelected={this.VideoWasSelected}/>;
   }
   render() {
     return (
       <div className="App">
-        <Header Visible={!this.state.playing}/>
-        <div className="App-root">
-          {this.MainBody}
+        <div className="not-footer">
+          <div className="not-footer-content">
+            <Header Visible={!this.state.playing}/>
+            <div className="App-root">
+              {this.MainBody}
+            </div>
+          </div>
         </div>
         <Footer />
       </div>
     );
   }
-}
-
-
-function removeSpinner() {
-  const spinner = document.getElementById('loading-screen-parent');
-  spinner.parentNode.removeChild(spinner);
 }
