@@ -26,11 +26,17 @@ export default class App extends Component {
     };
   }
   authorizationReceived(json){
+    if(!this.state) Flash.WARNING("state was null in authorizationReceived");
     Flash.DEBUG(`received auth token ${JSON.stringify(json)}`);
-    this.loadingScreen.parent.addChild(this.loadingScreen.spinner);
+    // if( this.loadingScreen ){
+    //   this.loadingScreen
+    //     .then(el => el.parent.appendChild(el.spinner))
+    //     .catch(err => Flash.CRITICAL(`Failed to display loading screen due to ${err}`));
+    // }
     this.setState({auth: json.token});
   }
   async VideoWasSelected(identifier) {
+    if(!this.state) Flash.WARNING("state was null in VideoWasSelected");
     try {
       this.setState(
         {playing: await this.state.rootDirectories.find(identifier) }
@@ -45,8 +51,10 @@ export default class App extends Component {
   }
   backButtonClicked() { this.setState({playing: null}); }
   get playerOptions() {
+    if(!this.state) Flash.WARNING("state was null in playerOptions");
     return {
       BackButtonClicked: this.backButtonClicked,
+      AuthToken: this.state.auth,
       autoplay: true,
       controls: true,
       sources: [{
@@ -55,15 +63,18 @@ export default class App extends Component {
     };
   }
   get MainBody() {
+    if(!this.state) Flash.WARNING("state was null in MainBody");
+    if(!this.state) return null;
     if (!this.state.auth) {
       this.loadingScreen = removeSpinner();
       return <LoginScreen Callback={this.authorizationReceived}/>;
     }
     if( this.state.rootDirectories === null ) return null;
     if( this.state.playing ) return <Player { ...this.playerOptions } />;
-    return <MenuWrapper OnSelected={this.VideoWasSelected}/>;
+    return <MenuWrapper OnSelected={this.VideoWasSelected} AuthToken={this.state.auth}/>;
   }
   render() {
+    if(!this.state) Flash.WARNING("state was null in render");
     return (
       <div className="App">
         <div className="not-footer">

@@ -23,7 +23,8 @@ describe('<VideoBox/>', () => {
       Identifier: "test-VideoBox",
       Title: "Test VideoBox Title",
       onClick: NO_OP_FUN,
-      Thumbnail: PLACEHOLDER_IMG
+      Thumbnail: PLACEHOLDER_IMG,
+      AuthToken: "dummy token"
     });
     //console.log(testval.render())
     expect(testval.URL).to.equal("/vid?id=test-VideoBox");
@@ -35,7 +36,8 @@ describe('<VideoBox/>', () => {
       URL: baseURL,
       Identifier: givenID,
       Title: "Test VideoBox Title",
-      Thumbnail: PLACEHOLDER_IMG
+      Thumbnail: PLACEHOLDER_IMG,
+      AuthToken: "dummy token"
     };
     const testval = new VideoBox(propsobj);
     expect(testval.props).to.deep.equal(propsobj);
@@ -49,7 +51,8 @@ describe('<VideoBox/>', () => {
       Title: "Test VideoBox Title",
       ThumbnailLoaded: NO_OP_FUN,
       OnClick: mockfun,
-      Thumbnail: PLACEHOLDER_IMG
+      Thumbnail: PLACEHOLDER_IMG,
+      AuthToken: "dummy token"
     };
     const testval = mount(React.createElement(VideoBox, propsobj));
     testval.mount();
@@ -64,7 +67,8 @@ describe('<VideoBox/>', () => {
       Title: "Test VideoBox Title",
       ThumbnailLoaded: NO_OP_FUN,
       OnClick: NO_OP_FUN,
-      Thumbnail: PLACEHOLDER_IMG
+      Thumbnail: PLACEHOLDER_IMG,
+      AuthToken: "dummy token"
     };
     const box = new VideoBox(props);
     expect(box.state.thumbnailHasLoaded).to.be.false;

@@ -51,7 +51,7 @@ describe('<Section />', () => {
     expect(testval.props.InitiallyExpanded).to.be.false;
     expect(testval.props.Content.Title).to.deep.equal(title);
     expect(testval.props).to.have.own.property('Content');
-    expect(testval.props.Content.Title).to.deep.equal(title)
+    expect(testval.props.Content.Title).to.deep.equal(title);
     expect(testval.props.Content.Thumbnail).to.not.be.null;
     expect(testval.props.Thumbnail).to.not.be.null;
     expect(
@@ -76,21 +76,23 @@ describe('<Section />', () => {
                                  Title={title}
                                  InitiallyExpanded={false}
                                  Thumbnail={thumb}
-                                 ThumbnailLoaded={NOOP_FUN} /> );
+                                 ThumbnailLoaded={NOOP_FUN}
+                                 AuthToken="dummy token"/> );
     testval.mount();
     expect(testval.exists(), 'test value existence').to.be.true;
     expect(testval.find('.section-header')).to.have.length(1);
     expect(testval.find('.section-content.visible')).to.have.length(0);
 
     testval = mount(<Section ItemClicked={onItemClicked}
-                                 Content={content}
-                                 Title={title}
-                                 InitiallyExpanded={true}
-                                 Thumbnail={thumb}
-                                 ThumbnailLoaded={NOOP_FUN} /> );
+                             Content={content}
+                             Title={title}
+                             InitiallyExpanded={true}
+                             Thumbnail={thumb}
+                             ThumbnailLoaded={NOOP_FUN}
+                             AuthToken="dummy token" /> );
     testval.mount();
     expect(testval.exists(), "the test component doesn't exist.").to.be.true;
-    expect(testval.find('.section-content.visible')).to.have.length(0)
+    expect(testval.find('.section-content.visible')).to.have.length(0);
     expect(testval.state().expanded).to.be.true;
   });
   it('has the correct content in the header', () => {

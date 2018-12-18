@@ -16,6 +16,8 @@ export default class Player extends React.Component {
   constructor(props) {
     super(props);
     this.state = {loaded: false};
+    this.authorizedHeaders = {};
+    this.authorizedHeaders["X-Token"] = this.props.AuthToken;
   }
   get backButton() {
     return (
@@ -25,7 +27,7 @@ export default class Player extends React.Component {
   }
   componentWillUnmount() { if( this.player ) this.player.dispose(); }
   componentDidMount() {
-    // videojs.xhr.withCredentials = true;
+    videojs.xhr({headers: this.authorizedHeaders});
     this.player = videojs(
       this.videoElement,
       this.props,
@@ -49,5 +51,6 @@ export default class Player extends React.Component {
 }
 
 Player.propTypes = {
-  BackButtonClicked: PropTypes.func.isRequired
+  BackButtonClicked: PropTypes.func.isRequired,
+  AuthToken: PropTypes.string.isRequired
 };

@@ -41,6 +41,8 @@ export default class Section extends ComponentWithThumbnail {
     this.state.extend({ expanded: this.props.InitiallyExpanded });
   }
   componentDidMount() {
+    if(!this.state) Flash.WARNING("state was null in Section.componentDidMount");
+    ComponentWithThumbnail.prototype.componentDidMount.call(this);
     this.sort(this.props.Content.Children)
         .then( sorted => this.make(sorted))
         .then( made => this.setState({filteredAndSorted: made}) )
@@ -68,6 +70,7 @@ export default class Section extends ComponentWithThumbnail {
   // to their hash
   get isNotTopLevel() { return isNaN(Number(this.props.Content.ID)); }
   get content() {
+    if(!this.state) Flash.WARNING("state was null in get content");
     if (this.state.filteredAndSorted && this.state.expanded ){
       return (
         <div className={`section-content visible`}
@@ -80,6 +83,7 @@ export default class Section extends ComponentWithThumbnail {
     }
   }
   get HeaderContent() {
+    if(!this.state) Flash.WARNING("state was null in get HeaderContent");
     if( this.state.thumbnailHasLoaded ){
       return (
         <div className={`section-header-content${this.isNotTopLevel?'':" top-level"}`}
@@ -103,6 +107,7 @@ export default class Section extends ComponentWithThumbnail {
   }
   get headerPadding() { return "1.2em"; }
   handleMouseOverHeader() {
+    if(!this.state) Flash.WARNING("state was null in handleMouseOverHeader");
     if( this.isNotTopLevel ) this.setState(
       {hasMouseFocus: true},
       () => {
@@ -113,6 +118,7 @@ export default class Section extends ComponentWithThumbnail {
     );
   }
   handleMouseLeave() {
+    if(!this.state) Flash.WARNING("state was null in handleMouseLeave");
     if( this.isNotTopLevel ) this.setState(
       {hasMouseFocus: false},
       () => {
@@ -126,16 +132,19 @@ export default class Section extends ComponentWithThumbnail {
     );
   }
   handleClickedHeader() {
+    if(!this.state) Flash.WARNING("state was null in handleClickedHeader");
     if( this.isNotTopLevel ) this.setState({expanded: !this.state.expanded});
   }
   makeComponent(content){
+    if(!this.state) Flash.WARNING("state was null in makeComponent");
     if( content.Type === DIRECTORY_FILE_TYPE ) return (
       <Section key={`video-box-${content.ID}`}
                Content={content}
                ItemClicked={this.props.ItemClicked}
                InitiallyExpanded={false}
                ThumbnailLoaded={this.props.ThumbnailLoaded}
-               Thumbnail={content.Thumbnail}/>
+               Thumbnail={content.Thumbnail}
+               AuthToken={this.props.AuthToken}/>
     );
     if( content.Type === VIDEO_FILE_TYPE ) return (
       <VideoBox {...this.makeVideoComponent(content)} />
@@ -149,6 +158,7 @@ export default class Section extends ComponentWithThumbnail {
     // );
   }
   makeVideoComponent(video){
+    if(!this.state) Flash.WARNING("state was null in makeVideoComponent");
     // separate function to enable testing
     return {
       Identifier: video.ID,
@@ -156,11 +166,13 @@ export default class Section extends ComponentWithThumbnail {
       OnClick: this.props.ItemClicked,
       Title: video.Title,
       ThumbnailLoaded: () => this.props.ThumbnailLoaded(video.ID),
-      Thumbnail: video.ID
+      Thumbnail: video.ID,
+      AuthToken: this.props.AuthToken
     };
   }
   // Sort the components in this section. Videos come first, then Directories
   sortFunction(elA, elB) {
+    if(!this.state) Flash.WARNING("state was null in sortFunction");
     if( elA.value.Type === DIRECTORY_FILE_TYPE ) {
       if( elB.value.Type === DIRECTORY_FILE_TYPE ) {
         // fall back on sorting by keys in alphabetical order
@@ -183,6 +195,7 @@ export default class Section extends ComponentWithThumbnail {
     return Sortable.noSwap;
   }
   sort(children) {
+    if(!this.state) Flash.WARNING("state was null in sort");
     return new Promise((resolve, reject) => {
       new Sortable(children).sortWith(this.sortFunction)
                             .then(resolve)
@@ -193,6 +206,7 @@ export default class Section extends ComponentWithThumbnail {
     return children.map(this.makeComponent);
   }
   render() {
+    if(!this.state) Flash.WARNING("state was null in Section.render");
     return (
       <div className='section'
            id={`section-for-${this.props.Content.Title}`}
@@ -215,5 +229,6 @@ Section.propTypes = {
   Content: PropTypes.object.isRequired,
   ItemClicked: PropTypes.func.isRequired,
   InitiallyExpanded: PropTypes.bool.isRequired,
-  Thumbnail: PropTypes.string.isRequired
+  Thumbnail: PropTypes.string.isRequired,
+  AuthToken: PropTypes.string.isRequired
 };

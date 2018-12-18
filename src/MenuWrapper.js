@@ -10,7 +10,8 @@ export default class MenuWrapper extends Component {
     this.sectionProps      = this.sectionProps.bind(this);
   }
   componentDidMount() {
-    Dump.request()
+    Dump.setAuthorization(this.props.AuthToken)
+      .request()
       .then(roots => this.setState(
         {rootDirectories: roots},
         () => removeSpinner()))
@@ -42,6 +43,7 @@ export default class MenuWrapper extends Component {
       ItemClicked: this.VideoWasSelected,
       Thumbnail: root.thumbnail,
       Title: root.Title,
+      AuthToken: this.props.AuthToken,
       key: `rootdir ${index}`
     };
   }
@@ -51,5 +53,6 @@ export default class MenuWrapper extends Component {
 }
 
 MenuWrapper.propTypes = {
-  OnSelected: PropTypes.func.isRequired
+  OnSelected: PropTypes.func.isRequired,
+  AuthToken: PropTypes.string.isRequired
 };

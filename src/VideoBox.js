@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Thumbnail from './Thumbnail';
-import { ComponentWithThumbnail } from './misc';
+import { ComponentWithThumbnail, Flash } from './misc';
 import './VideoBox.css';
 
 // A box to hold a video's title and its thumbnail
@@ -18,6 +18,7 @@ class VideoBox extends ComponentWithThumbnail {
     this.hideTitle = this.hideTitle.bind(this);
     this.showTitle = this.showTitle.bind(this);
     // ComponentWithThumbnail sets state, we need to update that, not overwrite it
+    if(!this.state) Flash.WARNING("state was null in VideoBox constructor");
     this.state.extend({ displayTitle: true });
   }
   clicked()  { this.props.OnClick(this.props.Identifier); }
@@ -76,7 +77,8 @@ VideoBox.propTypes = {
   Title: PropTypes.string.isRequired,
   OnClick: PropTypes.func.isRequired,
   // ThumbnailLoaded: PropTypes.func.isRequired,
-  Thumbnail: PropTypes.string.isRequired
+  Thumbnail: PropTypes.string.isRequired,
+  AuthToken: PropTypes.string.isRequired
 };
 
 export default VideoBox;

@@ -13,22 +13,22 @@ export default class LoginScreen extends Component {
     this.state = { name: '', auth: ''};
   }
   nameHasChanged(event) {
+    if(!this.state) Flash.WARNING("state was null in nameHasChanged");
     this.setState({name: event.target.value});
   }
   authHasChanged(event) {
+    if(!this.state) Flash.WARNING("state was null in authHasChanged");
     this.setState({auth: event.target.value});
   }
   get postOptions() {
-    let form = new FormData();
-    form.set("email", this.state.name);
-    form.set("password", this.state.auth);
-    // the keys are hardcoded in the server-side auth library
+    if(!this.state) Flash.WARNING("state was null in get postOptions");
     return {
       method: 'POST',
-      body: form
+      body: JSON.stringify({name: this.state.name, password: this.state.auth})
     };
   }
   submit(event) {
+    if(!this.state) Flash.WARNING("state was null in submit");
     Flash.DEBUG(`got submit event ${event} with username ${this.state.name} and password ${this.state.auth}`);
     fetch("/sign_in", this.postOptions)
       .then(result => result.json())
@@ -36,6 +36,7 @@ export default class LoginScreen extends Component {
       .catch(err => Flash.CRITICAL(`Error submitting sign-in info ${err}`));
   }
   render() {
+    if(!this.state) Flash.WARNING("state was null in Login.render");
     return (
       <div className="centered-div parent">
         <div className="centered-div middle">
