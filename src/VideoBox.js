@@ -18,7 +18,6 @@ class VideoBox extends ComponentWithThumbnail {
     this.hideTitle = this.hideTitle.bind(this);
     this.showTitle = this.showTitle.bind(this);
     // ComponentWithThumbnail sets state, we need to update that, not overwrite it
-    if(!this.state) Flash.WARNING("state was null in VideoBox constructor");
     this.state.extend({ displayTitle: true });
   }
   clicked()  { this.props.OnClick(this.props.Identifier); }

@@ -26,7 +26,6 @@ export default class App extends Component {
     };
   }
   authorizationReceived(json){
-    if(!this.state) Flash.WARNING("state was null in authorizationReceived");
     Flash.DEBUG(`received auth token ${JSON.stringify(json)}`);
     // if( this.loadingScreen ){
     //   this.loadingScreen
@@ -36,7 +35,6 @@ export default class App extends Component {
     this.setState({auth: json.token});
   }
   async VideoWasSelected(identifier) {
-    if(!this.state) Flash.WARNING("state was null in VideoWasSelected");
     try {
       this.setState(
         {playing: await this.state.rootDirectories.find(identifier) }
@@ -51,7 +49,6 @@ export default class App extends Component {
   }
   backButtonClicked() { this.setState({playing: null}); }
   get playerOptions() {
-    if(!this.state) Flash.WARNING("state was null in playerOptions");
     return {
       BackButtonClicked: this.backButtonClicked,
       AuthToken: this.state.auth,
@@ -63,7 +60,6 @@ export default class App extends Component {
     };
   }
   get MainBody() {
-    if(!this.state) Flash.WARNING("state was null in MainBody");
     if(!this.state) return null;
     if (!this.state.auth) {
       this.loadingScreen = removeSpinner();
@@ -74,7 +70,6 @@ export default class App extends Component {
     return <MenuWrapper OnSelected={this.VideoWasSelected} AuthToken={this.state.auth}/>;
   }
   render() {
-    if(!this.state) Flash.WARNING("state was null in render");
     return (
       <div className="App">
         <div className="not-footer">

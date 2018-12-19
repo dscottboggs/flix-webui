@@ -13,15 +13,12 @@ export default class LoginScreen extends Component {
     this.state = { name: '', auth: ''};
   }
   nameHasChanged(event) {
-    if(!this.state) Flash.WARNING("state was null in nameHasChanged");
     this.setState({name: event.target.value});
   }
   authHasChanged(event) {
-    if(!this.state) Flash.WARNING("state was null in authHasChanged");
     this.setState({auth: event.target.value});
   }
   get postOptions() {
-    if(!this.state) Flash.WARNING("state was null in get postOptions");
     return {
       method: 'POST',
       body: JSON.stringify({name: this.state.name, password: this.state.auth})
@@ -29,7 +26,6 @@ export default class LoginScreen extends Component {
   }
   submit(event) {
     if(!this.state) Flash.WARNING("state was null in submit");
-    Flash.DEBUG(`got submit event ${event} with username ${this.state.name} and password ${this.state.auth}`);
     fetch("/sign_in", this.postOptions)
       .then(result => result.json())
       .then(this.props.Callback)
