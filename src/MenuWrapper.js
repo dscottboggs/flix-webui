@@ -8,6 +8,7 @@ export default class MenuWrapper extends Component {
   constructor(props) {
     super(props);
     this.sectionProps      = this.sectionProps.bind(this);
+    this.state = { rootDirectories: null };
   }
   componentDidMount() {
     Dump.setAuthorization(this.props.AuthToken)
@@ -37,11 +38,12 @@ export default class MenuWrapper extends Component {
       Flash.ERROR( `Got root ${root} with non-numeric index ${index}`);
       return null;
     }
+    // Flash.DEBUG(`got root ${JSON.stringify(root)}`)
     return {
       Content: root,
       InitiallyExpanded: true,
-      ItemClicked: this.VideoWasSelected,
-      Thumbnail: root.thumbnail,
+      ItemClicked: this.props.OnSelected,
+      Thumbnail: root.Thumbnail,
       Title: root.Title,
       AuthToken: this.props.AuthToken,
       key: `rootdir ${index}`
