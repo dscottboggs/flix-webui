@@ -9,6 +9,7 @@ export default class LoginScreen extends Component {
     super(props);
     this.nameHasChanged = this.nameHasChanged.bind(this);
     this.authHasChanged = this.authHasChanged.bind(this);
+    this.passwordBoxKeyUpListener = this.passwordBoxKeyUpListener.bind(this);
     this.submit = this.submit.bind(this);
     this.state = { name: '', auth: ''};
   }
@@ -18,12 +19,16 @@ export default class LoginScreen extends Component {
   authHasChanged(event) {
     this.setState({auth: event.target.value});
   }
+  passwordBoxKeyUpListener(event) {
+    if( event.key === 'Enter' ) this.submit(event);
+  }
   get postOptions() {
     return {
       method: 'POST',
       body: JSON.stringify({name: this.state.name, password: this.state.auth})
     };
   }
+
   submit() {
     if(!this.state) Flash.WARNING("state was null in submit");
     fetch("/sign_in", this.postOptions)
@@ -41,9 +46,20 @@ export default class LoginScreen extends Component {
       <div className="centered-div parent">
         <div className="centered-div middle">
           <div className="centered-div content">
-            <input className="login-screen" id='name' placeholder="name" type="text" onChange={this.nameHasChanged} value={this.state.name} />
+            <input className="login-screen"
+                   id='name'
+                   placeholder="name"
+                   type="text"
+                   onChange={this.nameHasChanged}
+                   value={this.state.name} />
             <br />
-            <input className="login-screen" id='auth' placeholder="password" type="password" onChange={this.authHasChanged} value={this.state.auth} />
+            <input className="login-screen"
+                   id='auth'
+                   placeholder="password"
+                   type="password"
+                   onChange={this.authHasChanged}
+                   onKeyUp={this.passwordBoxKeyUpListener}
+                   value={this.state.auth} />
             <br />
             <button className="login-screen" id="submit" onClick={this.submit}>
               Authorize
