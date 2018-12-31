@@ -24,12 +24,16 @@ export default class LoginScreen extends Component {
       body: JSON.stringify({name: this.state.name, password: this.state.auth})
     };
   }
-  submit(event) {
+  submit() {
     if(!this.state) Flash.WARNING("state was null in submit");
     fetch("/sign_in", this.postOptions)
-      .then(result => result.json())
+      .then(result => {
+        if(result.status === 200) return result.json();
+        if(result.status === 403) throw "wrong username or password";
+        throw `got unexpected response status ${result.status} ${result.statusText}`;
+      })
       .then(this.props.Callback)
-      .catch(err => Flash.CRITICAL(`Error submitting sign-in info ${err}`));
+      .catch(err => Flash.CRITICAL(`Error submitting sign-in info: "${err}"`));
   }
   render() {
     if(!this.state) Flash.WARNING("state was null in Login.render");
