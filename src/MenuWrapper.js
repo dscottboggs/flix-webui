@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Section from './Section';
 import Dump from './Dump';
+import { IDNotFoundError } from './FileMetadata';
 import { Flash, removeSpinner } from './misc';
 
 export default class MenuWrapper extends Component {
@@ -17,6 +18,17 @@ export default class MenuWrapper extends Component {
         {rootDirectories: roots},
         () => removeSpinner()))
       .catch(err => Flash.ERROR(`error getting roots, ${err};`));
+  }
+  async videoWasSelected(ident) {
+    try {
+      this.props.OnSelected(await this.state.rootDirectories.find(ident));
+    } catch (err) {
+      if( !IDNotFoundError.isPrototypeOf(err) ) throw err;
+      this.setState({playing: null});
+      Flash.ERROR(
+        `Invalid ID ${JSON.stringify(ident)} was clicked, with error: ${err}`
+      );
+    }
   }
   get sections() {
     if( !this.state.rootDirectories ) return null;

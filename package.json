@@ -2,13 +2,13 @@
   "name": "media_server_webui",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:9999",
+  "proxy": "http://192.168.160.2",
   "dependencies": {
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-scripts": "1.1.4"
   },
-  "homepage": "http://localhost:21212",
+  "homepage": "http://192.168.160.2",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

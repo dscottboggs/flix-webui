@@ -20,9 +20,14 @@ module.exports = {
         "react", "promise"
     ],
     "rules": {
-        //"indent": [ "error", 2, ],
+        // "indent": [ "error", 2, ],
         "linebreak-style": [ "error", "unix" ],
-        "semi": [ "error", "always" ],
+        semi: [ "error", "never" ],
+        quotes: [
+          "error",
+          "single",
+          { avoidEscape: true, allowTemplateLiterals: true }
+        ],
         "react/jsx-indent-props": [ "error", "first" ],
         "react/jsx-indent":[ "error", 2]
     }
