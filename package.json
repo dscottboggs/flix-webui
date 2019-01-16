@@ -7,7 +7,8 @@
     "react-dom": "^16.4.2",
     "react-scripts": "1.1.4"
   },
-  "homepage": "http://localhost:21212",
+  "proxy": "https://go.flix.tams.tech/",
+  "homepage": "https://go.flix.tams.tech/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
