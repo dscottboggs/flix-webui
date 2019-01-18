@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './Loading.css';
 import './CenteredDiv.css';
 
@@ -7,14 +6,17 @@ const TIME_BETWEEN_UPDATES = 750;
 
 class Loading extends React.Component {
   componentDidMount() {
-    this.setState({loadingText: "Loading"}, () => {
+    this._isMounted = true;
+    if( this._isMounted) this.setState({loadingText: "Loading"}, () => {
       setTimeout(
         () => this.animateEllipses(),
         TIME_BETWEEN_UPDATES
       );
     });
   }
+  componentWillUnmount() { this._isMounted = false; }
   animateEllipses() {
+    if( !this._isMounted) return;
     if (this.state.loadingText.length < 10){
       this.setState({loadingText: this.state.loadingText + "."}, () => {
         setTimeout(
@@ -32,14 +34,25 @@ class Loading extends React.Component {
       });
     }
   }
+  get spinnerHTML() {
+    return (
+      <div className="lds-css">
+        {/* Loading spinner made on loading.io */}
+        <div className="lds-spinner" style={{height:"100%"}}>
+          { /* one div for each section */}
+          <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        </div>
+      </div>
+    );
+  }
   render() {
     return (
       <div className='loading-screen centered-div parent'>
         <div className='loading-screen centered-div middle'>
           <div className='loading-screen centered-div content'>
-            <img src={logo} className='loading-logo' alt="Loading..." />
+            {this.spinnerHTML}
             <br />
-            {this.state===null?"":this.state.loadingText}
+            {this.state && this.state.loadingText}
           </div>
         </div>
       </div>

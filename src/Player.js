@@ -12,6 +12,7 @@ import './Player.css';
 import { Flash } from './misc';
 
 import BackButton from './BackButton';
+import Loading from './Loading';
 
 export default class Player extends React.Component {
   constructor(props) {
@@ -34,6 +35,7 @@ export default class Player extends React.Component {
         .catch(reject);
     });
   }
+  get ready() { return this.state.loaded? 'ready': 'not-ready'; }
   componentWillUnmount() { if( this.player ) this.player.dispose(); }
   componentDidMount() {
     Flash.DEBUG(this.videoElement, this.props, this.state);
@@ -67,9 +69,8 @@ export default class Player extends React.Component {
     return (
       <div className="videojs-player-parent">
         {this.backButton}
-        <div className={
-               `video-wrapper-${this.state.loaded? 'ready': 'not-ready'}`
-             } >
+        { (this.state.loaded) ? null : <Loading /> }
+        <div className={`video-wrapper-${this.ready}`} >
           <video ref={elem => this.videoElement = elem}
                  className='video-js vjs-big-play-centered' />
         </div>
