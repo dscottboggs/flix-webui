@@ -73,9 +73,7 @@ export default class App extends Component {
       BackButtonClicked: this.backButtonClicked,
       autoplay: true,
       controls: true,
-      sources: [{
-        src: `/vid?id=${this.state.playing.ID}`
-      }]
+      ID: this.state.playing.ID
     };
   }
   get MainBody() {
