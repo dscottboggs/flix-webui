@@ -77,8 +77,27 @@ export default class App extends Component {
     };
   }
   get MainBody() {
+<<<<<<< Updated upstream
     if( this.state.rootDirectories === null ) return null;
     if( this.state.playing ) return <Player { ...this.playerOptions } />;
+=======
+<<<<<<< Updated upstream
+    if(!this.state) return null
+    if (!this.state.auth) {
+      this.loadingScreen = removeSpinner()
+      return <LoginScreen Callback={this.authorizationReceived}/>
+    }
+    if( this.state.rootDirectories === null ) return null
+    if( this.state.playing ) return <Player { ...this.playerOptions } />
+    return <MenuWrapper OnSelected={this.VideoWasSelected} AuthToken={this.state.auth}/>
+=======
+    if( this.state.rootDirectories === null ) return null;
+    if( this.state.playing ) {
+      const opts = this.playerOptions;
+      console.debug(opts);
+      return <Player { ...opts } />;
+    }
+>>>>>>> Stashed changes
     return this.state.rootDirectories.map(
       (root, i) => {
         if(root.Children) return <Section {...this.sectionProps(root, i)} />;
@@ -86,6 +105,10 @@ export default class App extends Component {
         return null;
       }
     ).values;
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
   }
   render() {
     return (
