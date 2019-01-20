@@ -9,6 +9,7 @@ import PropTypes from 'prop-types'
 import videojs from 'video.js'
 import './video-js.css'
 import './Player.css'
+import { Flash } from './misc'
 
 import BackButton from './BackButton'
 
@@ -34,24 +35,46 @@ export default class Player extends React.Component {
                   className="player-back-button" />
     )
   }
-  get beforeRequest(){
-    return options => {
-      if (!options.headers) options.headers = {}
-      options.headers['X-Token'] = this.props.AuthToken
-      return options
-    }
+  get info() {
+    return new Promise(function(resolve, reject) {
+      fetch(`/nfo?id=${this.props.Identifier}`, {headers: {'X-Token': this.props.AuthToken}})
+      .then(response => {
+        if (response.status === 200) {
+          return response.json()
+        } else {
+          throw `unexpected HTTP status "${response.statusText}" for "/nfo?id=${this.props.Identifier}"`
+        }
+      }).then(resolve).catch(reject)
+    })
   }
   componentWillUnmount() { if( this.player ) this.player.dispose() }
+  loaded() { this.setState({loaded: true}) }
   componentDidMount() {
-
-    this.player = videojs(this.videoElement)
-    // if (!this.player.hls.xhr.headers) this.player.hls.xhr.headers = {}
-    // this.player.hls.xhr.headers['X-Token'] = this.props.AuthToken
-    // this.player.autoplay(true)
-    // this.player.controls(true)
-    // this.player.poster(`/img?id=${this.props.Identifier}`)
-    // this.player.src(`/vid?id=${this.props.Identifier}`)
-    // this.player.ready()
+    this.info.then(info => {
+      let src = this.props.sources || []
+      src.push({
+        src: `/vid?id=${this.props.Identifier}&auth=${this.props.AuthToken}`,
+        type: info.MimeType
+      })
+      return src
+    }).catch(err => {
+      Flash.WARNING(`error fetching info ${err}, trying default MIME type`)
+      let src = this.props.sources || []
+      src.push({
+        src: `/vid?id=${this.props.Identifier}&auth=${this.props.AuthToken}`,
+        type: 'video/mp4'
+      })
+      return src
+    })
+    // eslint-disable-next-line promise/always-return
+      .then(src => {
+        this.player = videojs(
+          this.videoElement,
+          {sources: src, autoplay: true, controls: true},
+          this.loaded
+        )
+      })
+      .catch(Flash.CRITICAL)
   }
   render() {
     return (
@@ -75,5 +98,6 @@ export default class Player extends React.Component {
 Player.propTypes = {
   BackButtonClicked: PropTypes.func.isRequired,
   AuthToken: PropTypes.string.isRequired,
-  Identifier: PropTypes.string.isRequired
+  Identifier: PropTypes.string.isRequired,
+  sources: PropTypes.array
 }

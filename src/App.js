@@ -47,7 +47,6 @@ export default class App extends Component {
     }
   }
   get MainBody() {
-    if(!this.state) return null
     if (!this.state.auth) {
       this.loadingScreen = removeSpinner()
       return <LoginScreen Callback={this.authorizationReceived}/>
