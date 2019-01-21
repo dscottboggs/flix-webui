@@ -40,12 +40,12 @@ class BackgroundLink extends Link {
       .catch(e => Flash.ERROR(this.text + ' ' + e))
   }
   asHTML(token) {
-    return (
+    return token? (
       <div className="Footer Footer-link"
            onClick={ ()=>this.go(token)}
            key={this.address}> {this.text}
       </div>
-    )
+    ) : null
   }
 }
 
