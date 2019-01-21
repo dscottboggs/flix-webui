@@ -18,6 +18,10 @@ export default class App extends Component {
     this.VideoWasSelected  = this.VideoWasSelected.bind(this)
     this.backButtonClicked = this.backButtonClicked.bind(this)
     this.authorizationReceived = this.authorizationReceived.bind(this)
+    this.deauthorize = this.deauthorize.bind(this)
+    this.getCookie = this.getCookie.bind(this)
+    this.setCookie = this.setCookie.bind(this)
+    this.deleteCookie = this.deleteCookie.bind(this)
     this.state = {
       auth: this.getCookie(),
       playing: null,
@@ -34,9 +38,16 @@ export default class App extends Component {
     this.setState({auth: json.token})
   }
 
+  deauthorize() {
+    this.deleteCookie()
+    window.location.reload()
+  }
+
   getCookie(cookies) {
     if (cookies) {
-      let c = cookies.filter(cookie=>cookie.startsWith('token'))
+      let c = cookies
+        .map(c=>c.trim())
+        .filter(cookie=>cookie.startsWith('token'))
       return c.length? c[0].split('=', 2) : null
     }
     cookies = document.cookie.split(';')
@@ -52,7 +63,7 @@ export default class App extends Component {
   }
 
   deleteCookie(value) {
-    document.cookie = 'token=' + value + ';expires=' + new Date().toUTCString() + ';path=/'
+    document.cookie = (value || 'token=' + this.state.auth) + ';expires=' + new Date().toUTCString() + ';path=/'
   }
 
   VideoWasSelected(identifier) {
@@ -88,7 +99,7 @@ export default class App extends Component {
             </div>
           </div>
         </div>
-        <Footer />
+        <Footer LogoutCallback={this.deauthorize} AuthToken={this.state.auth}/>
       </div>
     )
   }
