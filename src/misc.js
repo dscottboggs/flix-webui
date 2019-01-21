@@ -3,38 +3,38 @@
 
 // Please see LICENSE.md for terms of use and modification
 
-import { Component } from 'react';
-import { PropTypes } from 'prop-types';
-import dedent from 'dedent';
+import { Component } from 'react'
+import { PropTypes } from 'prop-types'
+import dedent from 'dedent'
 
 
-export const DEBUG_MODE = true;
+export const DEBUG_MODE = true
 
 // Log a message
 export const Flash = (...message) => {
-  if( DEBUG_MODE ) console.log(...message);
-};
+  if( DEBUG_MODE ) console.log(...message)
+}
 
 // Logs a message with debug severity
 Flash.LOG = Flash.DEBUG = (...message) => {
-  if( DEBUG_MODE ) console.debug(...message);
-};
+  if( DEBUG_MODE ) console.debug(...message)
+}
 // Logs a message with the default severity
 Flash.DEFAULT = Flash.INFO = (...message) => {
-  if( DEBUG_MODE ) console.log(...message);
-};
+  if( DEBUG_MODE ) console.log(...message)
+}
 // Logs a warning, or a message to the user
 Flash.WARN = Flash.WARNING = Flash.MESSAGE = (...message) => {
-  if( DEBUG_MODE ) console.log(...message);
-};
+  if( DEBUG_MODE ) console.log(...message)
+}
 // Logs an error or unexpected situation
 Flash.ERROR = Flash.PROBLEM = (...message) => {
-  if( DEBUG_MODE ) console.error(...message);
-};
+  if( DEBUG_MODE ) console.error(...message)
+}
 // creates an alert window
 Flash.FATAL = Flash.CRITICAL = (...message) => {
-  if( DEBUG_MODE ) alert(...message);
-};
+  if( DEBUG_MODE ) alert(...message)
+}
 
 
 // Sensible contains some sensible methods for working with generic objects.
@@ -56,85 +56,85 @@ export class Sensible {
         the constructor. This is mostly to prevent user input from accidentally
         (or maliciously)overriding one of the methods of this class, then
         getting executed (or failing to execute and causing problems).`
-      );
-      this[key] = obj[key];
+      )
+      this[key] = obj[key]
     }
   }
   // returns a generator which will return the result of fun(value, key) each
   // time it's called for each member of the object which it is called from.
   *gMap(fun) {
     for( var key in this ) {
-      const value = this[key];
-      yield fun(value, key);
+      const value = this[key]
+      yield fun(value, key)
     }
   }
   *gFilter(fun) {
-    const result = (key) => {return {key: key, value: this[key]};};
+    const result = (key) => {return {key: key, value: this[key]}}
     for( var key in this ) {
-      const value = this[key];
-      if( fun(value, key) ) yield result(key);
+      const value = this[key]
+      if( fun(value, key) ) yield result(key)
     }
   }
   forEach(fun) {
     for( var key in this ){
-      fun(this[key], key);
+      fun(this[key], key)
     }
-    return this;
+    return this
   }
   filter(fun) {
-    let out = new Sensible();
+    let out = new Sensible()
     for( var key in this ){
-      if( fun(this[key], key) ) /* then */ out[key] = this[key];
+      if( fun(this[key], key) ) /* then */ out[key] = this[key]
     }
-    return out;
+    return out
   }
   map(fun) {
-    let out = new Sensible();
+    let out = new Sensible()
     for( var key in this ){
-      out[key] = fun(this[key], key);
+      out[key] = fun(this[key], key)
     }
-    return out;
+    return out
   }
   async willFilter(fun) {
-    return this.filter(fun);
+    return this.filter(fun)
   }
   willDoForEach(fun) {
     return new Promise(resolve => {
-      this.forEach(fun);
-      resolve();
-    });
+      this.forEach(fun)
+      resolve()
+    })
   }
   async willMap(fun){
-    return this.map(fun);
+    return this.map(fun)
   }
-  get all() { return this.filter(() => true); }
+  get all() { return this.filter(() => true) }
   extend(obj) {
     for( var key in obj ) {
       if( obj.hasOwnProperty(key) ) {
-        this[key] = obj[key];
+        this[key] = obj[key]
       }
     }
-    return this;
+    return this
   }
   get values() {
-    return this.keys.map(key => this[key]);
+    return this.keys.map(key => this[key])
   }
   get keys() {
-    return Object.keys(this.all);
+    return Object.keys(this.all)
   }
   get length() {
-    let count = 0;
-    this.forEach(() => count++);
-    return count;
+    let count = 0
+    this.forEach(() => count++)
+    return count
   }
   get isEmpty() {
-    return this.length === 0;
+    return this.length === 0
   }
 }
 
-export function not(b) { return !b; }
+export function not(b) { return !b }
 
-export const PLACEHOLDER_IMG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4ggVFh4TiLtdhgAAABtpVFh0Q29tbWVudAAAAAAAMXB4IGNsZWFyIGltYWdl6nCYogAAAAtJREFUCNdjYAACAAAFAAHiJgWbAAAAAElFTkSuQmCC";
+export const PLACEHOLDER_IMG = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4ggVFh4TiLtdhgAAABtpVFh0Q29tbWVudAAAAAAAMXB4IGNsZWFyIGltYWdl6nCYogAAAAtJREFUCNdjYAACAAAFAAHiJgWbAAAAAElFTkSuQmCC'
 
 /* A ComponentWithThumbnail is a React Component that needs a thumbnail.
  *
@@ -156,38 +156,46 @@ export const PLACEHOLDER_IMG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA
  */
 export class ComponentWithThumbnail extends Component {
   constructor(props) {
-    super(props);
-    this.checkForThumbnail = this.checkForThumbnail.bind(this);
+    super(props)
+    this.checkForThumbnail = this.checkForThumbnail.bind(this)
+    this.handleResponse = this.handleResponse.bind(this)
     this.state = new Sensible({
       thumbnailHasLoaded: false,
       ThumbnailSource: PLACEHOLDER_IMG
-    });
+    })
   }
   get authenticationHeaders(){
-    return new Headers({'X-Token': this.props.AuthToken});
+    return {'X-Token': this.props.AuthToken}
+  }
+  async handleResponse(response) {
+    if(response.status === 200) return response.blob()
+    throw new Error(`request to '/img/${this.props.Thumbnail}' gave status '${response.status} ${response.statusText}'`)
   }
   checkForThumbnail() {
-    if(!this.state) Flash.WARNING("state was null in checkForThumbnail");
+    if(!this.state) Flash.WARNING('state was null in checkForThumbnail')
     if( not(this.props.Thumbnail) ){
-      Flash.WARN("thumbnail prop not set");
-      this.setState({thumbnailHasLoaded: true});
-      return;
+      Flash.WARN('thumbnail prop not set')
+      this.setState({thumbnailHasLoaded: true})
+      return
     }
     fetch(`/img/${this.props.Thumbnail}`, {headers: this.authenticationHeaders})
-      .then(response => response.blob())
-      .then(blob => this.setState({ThumbnailSource: btoa(blob), thumbnailHasLoaded: true}))
+      .then(this.handleResponse)
+      .then(blob => this.setState({ThumbnailSource: URL.createObjectURL(blob), thumbnailHasLoaded: true}))
       .catch(err => Flash.ERROR(
-        `error downloading thumbnail for ${this.props.Title}: ${err}`));
+        `error downloading thumbnail for ${this.props.Title}: ${err}`))
   }
   componentDidMount() {
-    this.checkForThumbnail();
+    this.checkForThumbnail()
+  }
+  componentWillUnmount() {
+    URL.revokeObjectURL(this.state.ThumbnailSource)
   }
 }
 ComponentWithThumbnail.propTypes = {
   Thumbnail: PropTypes.string.isRequired,
   AuthToken: PropTypes.string.isRequired,
   Title: PropTypes.string
-};
+}
 
 // Adds the sortBy and sortByKeys methods, in addition to the methods defined in
 // sensible, to a given object.
@@ -199,33 +207,33 @@ export class Sortable extends Sensible {
   // for each key in the subclassed object.
   async sortBy(parameter) {
     if( ( parameter === undefined || parameter === null ) ) {
-      return {using: this.sortWith};
+      return {using: this.sortWith}
     } else {
       let sortable = this.keys.map(
-        key => {return {key: key, value: this[key][parameter]};}
-      );
+        key => {return {key: key, value: this[key][parameter]}}
+      )
       return {
         using: async (sortFunc) => {
           if( sortFunc ){
-            sortable.sort(sortFunc);
+            sortable.sort(sortFunc)
           } else {
             sortable.sort(
               (a, b) => a.value > b.value? Sortable.swap: Sortable.noSwap
-            );
+            )
           }
-          return sortable.map(sorted => this[sorted.key]);
+          return sortable.map(sorted => this[sorted.key])
         }
-      };
+      }
     }
   }
   async sortByWith(parameter, sortFunc) {
-    const ready = await this.sortBy(parameter);
-    return ready.using(sortFunc);
+    const ready = await this.sortBy(parameter)
+    return ready.using(sortFunc)
   }
   async sortWith(fun) {
-    let sortable = this.keys.map(key => {return {key: key, value: this[key]};});
-    sortable.sort(fun);
-    return sortable.map(sorted => sorted.value);
+    let sortable = this.keys.map(key => {return {key: key, value: this[key]}})
+    sortable.sort(fun)
+    return sortable.map(sorted => sorted.value)
   }
   // sortBy returns an array of the values of a parameter sorted by their keys
   // in this object, according to fun. returns a function which can receive
@@ -235,25 +243,25 @@ export class Sortable extends Sensible {
   // //    or
   // sortable.sortByKeys().then(sorted => ...action);
   async sortByKeys(fun) {
-    let keys = this.keys;
-    keys.sort(fun);
-    return keys.map(key => this[key]);
+    let keys = this.keys
+    keys.sort(fun)
+    return keys.map(key => this[key])
   }
 }
 
-Sortable.noSwap = -1;
-Sortable.swap = 1;
-Sortable.defaultSortFunction = null;
+Sortable.noSwap = -1
+Sortable.swap = 1
+Sortable.defaultSortFunction = null
 
 
 // remove the loading spinner
 // please note that this is not a part of the app because it needs to be present
 // before the app loads so that it can be displayed while the app is downloading.
 export async function removeSpinner() {
-  const spinner = document.getElementById('loading-screen-parent');
-  if (!spinner) return; // null guard
-  const parentNode = spinner.parentNode;
-  if (!(parentNode && parentNode.removeChild)) return; // null guard
-  spinner.parentNode.removeChild(spinner);
-  return {spinner: spinner, parent: parentNode};
+  const spinner = document.getElementById('loading-screen-parent')
+  if (!spinner) return // null guard
+  const parentNode = spinner.parentNode
+  if (!(parentNode && parentNode.removeChild)) return // null guard
+  spinner.parentNode.removeChild(spinner)
+  return {spinner: spinner, parent: parentNode}
 }
