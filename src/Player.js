@@ -16,19 +16,10 @@ import BackButton from './BackButton'
 export default class Player extends React.Component {
   constructor(props) {
     super(props)
+    this.componentDidMount = this.componentDidMount.bind(this)
+    this.loaded = this.loaded.bind(this)
     this.state = {loaded: false}
-    // this.authorizedHeaders = {'X-Token': this.props.AuthToken}
-    videojs.xhr.beforeRequest = options => {
-      if( !options.headers ) options.headers = {}
-      options.headers['X-Token'] = this.props.AuthToken
-    }
-    // videojs.xhr(
-    //   {headers: this.authorizedHeaders, url: this.videoSource},
-    //   () => this.setState({loaded: true})
-    // )
   }
-  get posterSource() { return `/img/${this.props.Identifier}` }
-  get videoSource() { return `/vid/${this.props.Identifier}` }
   get backButton() {
     return (
       <BackButton ButtonClick={this.props.BackButtonClicked}
@@ -36,7 +27,7 @@ export default class Player extends React.Component {
     )
   }
   get info() {
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject) => {
       fetch(`/nfo?id=${this.props.Identifier}`, {headers: {'X-Token': this.props.AuthToken}})
       .then(response => {
         if (response.status === 200) {
@@ -80,15 +71,11 @@ export default class Player extends React.Component {
     return (
       <div className="videojs-player-parent">
         {this.backButton}
-        <div className={
-          `video-wrapper-${this.state.loaded? 'ready': 'not-ready'}`
-        } >
+        <div className={`video-wrapper-${this.state.loaded? 'ready': 'not-ready'}`}>
           <video ref={elem => this.videoElement = elem}
                  className='video-js vjs-big-play-centered'
                  autoPlay controls
-                 poster={this.posterSource}>
-            <source src={this.videoSource} />
-          </video>
+          />
         </div>
       </div>
     )

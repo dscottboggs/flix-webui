@@ -12,7 +12,6 @@ import MenuWrapper from './MenuWrapper'
 import LoginScreen from './Login'
 import { Flash, removeSpinner } from './misc'
 
-
 export default class App extends Component {
   constructor(props) {
     super(props)
@@ -20,19 +19,42 @@ export default class App extends Component {
     this.backButtonClicked = this.backButtonClicked.bind(this)
     this.authorizationReceived = this.authorizationReceived.bind(this)
     this.state = {
-      auth: null,
-      playing: null
+      auth: this.getCookie(),
+      playing: null,
     }
   }
-  authorizationReceived(json){
+  authorizationReceived(json, remember=false){
     Flash.DEBUG(`received auth token ${JSON.stringify(json)}`)
     // if( this.loadingScreen ){
     //   this.loadingScreen
     //     .then(el => el.parent.appendChild(el.spinner))
     //     .catch(err => Flash.CRITICAL(`Failed to display loading screen due to ${err}`));
     // }
+	if(remember) document.cookie = this.setCookie(json.token)
     this.setState({auth: json.token})
   }
+
+  getCookie(cookies) {
+    if (cookies) {
+      let c = cookies.filter(cookie=>cookie.startsWith('token'))
+      return c.length? c[0].split('=', 2) : null
+    }
+    cookies = document.cookie.split(';')
+    const relevantCookie = this.getCookie(cookies)
+    return relevantCookie? relevantCookie[1]
+                         : null
+  }
+
+  setCookie(token, expiryHours = 30*24) {
+    let time = new Date()
+    time.setTime(time.getTime() + expiryHours*60*60*1000)
+    document.cookie = `token=${token};expires=${time.toUTCString()};path=/`
+  }
+
+  deleteCookie(value) {
+    document.cookie = 'token=' + value + ';expires=' + new Date().toUTCString() + ';path=/'
+  }
+
   VideoWasSelected(identifier) {
     Flash.DEBUG(`identifier: "${identifier}".`)
     this.setState( {playing: identifier } )
