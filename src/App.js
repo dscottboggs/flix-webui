@@ -57,6 +57,7 @@ export default class App extends Component {
   }
 
   setCookie(token, expiryHours = 30*24) {
+    if (!token) return Flash.ERROR(`Got invalid token ${token}!`)
     let time = new Date()
     time.setTime(time.getTime() + expiryHours*60*60*1000)
     document.cookie = `token=${token};expires=${time.toUTCString()};path=/`
@@ -86,7 +87,9 @@ export default class App extends Component {
     }
     if( this.state.rootDirectories === null ) return null
     if( this.state.playing ) return <Player { ...this.playerOptions } />
-    return <MenuWrapper OnSelected={this.VideoWasSelected} AuthToken={this.state.auth}/>
+    return <MenuWrapper OnSelected={this.VideoWasSelected}
+                        AuthToken={this.state.auth}
+                        LogoutCallback={this.deauthorize} />
   }
   render() {
     return (

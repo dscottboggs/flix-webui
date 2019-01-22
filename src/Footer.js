@@ -50,7 +50,7 @@ class BackgroundLink extends Link {
 }
 
 let links = [
-  new Link('https://gitlab.com/dscottboggs/goMediaServer', 'Source Code'),
+  new Link('https://github.com/dscottboggs/flix.cr', 'Source Code'),
   new BackgroundLink('/scan', 'Scan For Updated Metadata')
 ]
 
@@ -76,5 +76,5 @@ export default class Footer extends React.Component {
 
 Footer.propTypes = {
   LogoutCallback: PropTypes.func.isRequired,
-  AuthToken: PropTypes.string.isRequired
+  AuthToken: PropTypes.string
 }
