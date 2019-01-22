@@ -16,7 +16,7 @@ export default class Section extends ComponentWithThumbnail {
   constructor(props) {
     super(props)
     this.sort = this.sort.bind(this)
-    this.make = this.make.bind(this)
+    this.toComponents = this.toComponents.bind(this)
     this.makeVideoComponent = this.makeVideoComponent.bind(this)
     this.makeComponent = this.makeComponent.bind(this)
     this.handleClickedHeader = this.handleClickedHeader.bind(this)
@@ -27,7 +27,7 @@ export default class Section extends ComponentWithThumbnail {
   componentDidMount() {
     ComponentWithThumbnail.prototype.componentDidMount.call(this)
     this.sort(this.props.Content.Children)
-        .then( sorted => this.make(sorted))
+        .then(this.toComponents)
         .then( made => this.setState({filteredAndSorted: made }) )
         .catch( err => {
             Flash.ERROR(err)
@@ -176,7 +176,7 @@ export default class Section extends ComponentWithThumbnail {
                             .catch(reject)
     })
   }
-  async make(children) {
+  async toComponents(children) {
     return children.map(this.makeComponent)
   }
   render() {
