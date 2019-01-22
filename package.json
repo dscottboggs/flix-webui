@@ -2,13 +2,13 @@
   "name": "media_server_webui",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://192.168.160.2",
+  "proxy": "https://demo.flix.tams.tech",
   "dependencies": {
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-scripts": "1.1.4"
   },
-  "homepage": "http://192.168.160.2",
+  "homepage": "https://demo.flix.tams.tech",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -24,5 +24,11 @@
     "eslint-plugin-promise": "^4.0.1",
     "react-dom": "^16.4.2",
     "video.js": "^7.1.0"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie < 11",
+    "not op_mini all"
+  ]
 }
